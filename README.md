@@ -21,10 +21,10 @@
 3. Click the mic button to stop the web socket server or say explicitly "disconnect"
 
 ## Prompts for seamless communication
-
+```
 ## To Check Available Slots:
 
-  User Input: Please give me the available slots
+  User Input: Please give me the available slots / show me the available slots
   Sample Output:
     On 27 November, we have 8 AM, 10 AM, 12 PM.
     On 28 November, we have 1 PM, 2 PM, 3 PM.
@@ -32,20 +32,31 @@
 
 ## Book a Slot:
 
-  User Input: Book slot on 28 November at 2 PM.
+  User Input: 
+  
+  Example 1: Book slot on 28 November at 5 PM 
+  Example 2: Book slot on 2nd December at 12 PM
+  Example 3: Book slot on 13th October at 12 PM
+
   Sample Output:
-    The slot on 28 November at 2 PM has been successfully booked!
+    The slot on 28 November at 5 PM has been successfully booked!
     
 ## Invalid Booking:
 
-  User Input: Book slot on 28 November at 5 PM.
+  User Input: 
+  
+  Example 1: Book slot on 28 November at 2 PM 
+  Example 2: Book slot on 30th February at 12 PM
+  
   Sample Output:  
-    The slot on 28 November at 5 PM is unavailable or already booked
+    The slot on 28 November at 2 PM is unavailable or already booked
 
 ## Other queries:
   The LLM through the response stack generates a contextual response. 
+```
 
 ## project structure
+```
 Ai Voice Agent/
 │
 ├── public/                 # Frontend components and static assets
@@ -58,8 +69,10 @@ Ai Voice Agent/
 │   ├── playht.js           # Integrates with PlayHT API for Text-to-Speech (TTS) functionality
 │
 ├── .env                    # Environment file for sensitive API keys and configurations
+```
 
 ## Key Components
+```
 1. Frontend
 Purpose: Provides the user interface for audio recording and real-time interactions.
 
@@ -74,7 +87,9 @@ Purpose: Provides the user interface for audio recording and real-time interacti
   Captures audio using the Web Audio API.
   Manages WebSocket connections to send audio data and receive captions/responses.
   Handles UI updates, such as captions and playback controls.
+```
 
+```
 2. Backend
 Purpose: Processes audio data, manages user queries, integrates APIs, and streams responses.
 
@@ -87,14 +102,16 @@ Purpose: Processes audio data, manages user queries, integrates APIs, and stream
   ## groq.js:
   Processes text queries using Groq API for interactive conversations.
   Implements get_slots and book_slot functions:
-  ## get_slots: Retrieves available slots from an in-memory data structure.
-  ## book_slot: Updates slot availability and confirms bookings.
+  • get_slots: Retrieves available slots from an in-memory data structure.
+  • book_slot: Updates slot availability and confirms bookings.
   Handles natural language processing for slot-related requests (e.g., parsing dates and times).
 
   ## playht.js:
   Integrates with PlayHT for Text-to-Speech (TTS) responses.
   Streams audio responses back to the frontend for real-time playback.
+```
 
+```
 3. APIs
 
   ## Deepgram API:
@@ -103,41 +120,44 @@ Purpose: Processes audio data, manages user queries, integrates APIs, and stream
   Processes user text and generates responses based on conversation history.
   ## PlayHT API:
   Converts text responses into audio using a low-latency TTS engine.
+```
 
 ## Assumptions Made During Development
 
-  ## Slot Data Storage:
+  • Slot Data Storage:
 
   Slots are stored in an in-memory data structure (slotData).
   Assumes slot availability is reset on server restart. Persistent storage like a database is not implemented.
   
-  ## Audio Format:
+  • Audio Format:
 
   The application uses standard audio formats (e.g., MP3, WAV) for compatibility.
   Assumes the client browser supports Web Audio API for recording and playback.
   
-  ## Session Management:
+  • Session Management:
 
   Unique session IDs (sid1 and sid2) are used to handle concurrent audio streams.
   Assumes users interact sequentially within the same session.
   
-  ## API Limits:
+  • API Limits:
 
   Relies on free or trial versions of Deepgram, Groq, and PlayHT APIs.
   Assumes API quotas are sufficient for typical usage during testing and demos.
   
-  ## Date and Time Parsing:
+  • Date and Time Parsing:
 
   Assumes user inputs for dates and times are in formats like "27 November" and "10 AM".
   Uses regex to parse these inputs; edge cases may require additional handling.
   
-  ## Error Handling:
+  • Error Handling:
 
   Basic error handling is implemented for most scenarios (e.g., invalid date/time inputs, API failures).
   Assumes the application will not encounter frequent API or WebSocket failures.
   
-  ## Real-Time Latency:
+  • Real-Time Latency:
 
   Designed to achieve sub-3-second latency for live streaming.
   Assumes network conditions and API response times are stable.
+
+
 
